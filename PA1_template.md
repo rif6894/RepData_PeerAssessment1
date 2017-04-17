@@ -4,11 +4,14 @@
 ## Loading and preprocessing the data
 
 ```r
+# Load the necessary libraries
 library(ggplot2)
 suppressMessages(suppressWarnings(library(gridExtra)))
 suppressMessages(suppressWarnings(library(dplyr)))
-
-activity <- read.table("activity.csv",header=TRUE,quote="\"", sep=",", colClasses=c("integer","Date","integer"))
+# Read the data 
+activity <- read.table("activity.csv",
+                       header=TRUE,quote="\"", sep=",",
+                       colClasses=c("integer","Date","integer"))
 ```
 Summarize the data, to assess whether there are missing values, range and number of values.
 
@@ -32,6 +35,17 @@ summary(activity$steps)
 ##    0.00    0.00    0.00   37.38   12.00  806.00    2304
 ```
 Ploting a histogram of the number of steps per day. The aggregate function does not return any day which has all NA values.
+
+
+```r
+day_total <- aggregate(steps ~  date, data=activity, sum)
+ggplot(day_total,aes(steps)) + 
+      geom_histogram(binwidth=500,fill="blue",colour="black") + 
+      xlab("Number of Steps in a day") + 
+      ylab("Number of days") + 
+      ylim(0,8) +
+      ggtitle("Histogram of number of steps per day")
+```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
